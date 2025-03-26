@@ -1,32 +1,32 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import User from '../models/User'; // Import the User class
 
 const UpdateForm = () => {
-    const { mail } = useParams(); 
+    const { mail } = useParams();
     const navigate = useNavigate();
-    const [userData, setUserData] = useState({ name: '', email: '', age: '' }); // Include age
+    const [userData, setUserData] = useState(new User('', '', ''));
 
     useEffect(() => {
         const fetchUserData = async () => {
-            const response = await fetch(`/api/users/${mail}`); 
+            const response = await fetch(`/api/users/${mail}`);
             const data = await response.json();
-            setUserData(data);
+            setUserData(User.fromObject(data)); // Use User.fromObject to ensure consistency
         };
         fetchUserData();
     }, [mail]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setUserData({ ...userData, [name]: value }); 
+        setUserData({ ...userData, [name]: value });
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-    
         await fetch(`/api/users/${mail}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(userData),
+            body: JSON.stringify(userData.toObject()), // Serialize User instance
         });
         navigate('/');
     };

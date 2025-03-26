@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import User from '../models/UserModel';
 import DeleteButton from './DeleteButton'; // Import DeleteButton
+import UpdateButton from './UpdateButton';
+import AddUserButton from './AddUserButton';
 
 const Users = () => {
   const [users, setUsers] = useState([]);
@@ -21,7 +23,7 @@ const Users = () => {
   const handleDelete = (email) => {
     setUsers(users.filter(user => user.email !== email));
   };
-  
+
   return (
     <div>
       <h1>Users</h1>
@@ -31,6 +33,7 @@ const Users = () => {
             <th>Name</th>
             <th>Email</th>
             <th>Age</th>
+            <th>Actions</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -43,10 +46,14 @@ const Users = () => {
               <td>
                 <DeleteButton mail={user.email} onDelete={handleDelete} /> 
               </td>
+              <td>
+                <UpdateButton user={user}/>
+              </td>
             </tr>
           ))}
         </tbody>
       </table>
+      <AddUserButton />
     </div>
   );
 };
