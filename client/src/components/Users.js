@@ -47,7 +47,7 @@ const Users = () => {
                 <DeleteButton mail={user.email} onDelete={handleDelete} /> 
               </td>
               <td>
-                <UpdateButton user={user}/>
+                <UpdateButton user={user} /> {/* Pass user to UpdateButton */}
               </td>
             </tr>
           ))}

@@ -5,7 +5,7 @@ const UpdateButton = ({ user }) => {
 
     const navigate = useNavigate();
     const updateUser = () => {
-        navigate(`/update/${user.email}`); 
+        navigate(`/update/${user.email}`, { state: { user } }); // Pass user details via state
     };
 
     return (

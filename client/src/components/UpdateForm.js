@@ -5,11 +5,11 @@ import User from '../models/User'; // Import the User class
 const UpdateForm = () => {
     const { mail } = useParams();
     const navigate = useNavigate();
-    const [userData, setUserData] = useState(new User('', '', ''));
+    const [userData, setUserData] = useState(new User('', '', '')); // Ensure userData is a User instance
 
     useEffect(() => {
         const fetchUserData = async () => {
-            const response = await fetch(`/api/users/${mail}`);
+            const response = await fetch(`http://localhost:3002/users/${mail}`);
             const data = await response.json();
             setUserData(User.fromObject(data)); // Use User.fromObject to ensure consistency
         };
@@ -18,17 +18,20 @@ const UpdateForm = () => {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setUserData({ ...userData, [name]: value });
+        setUserData((prevData) => {
+            const updatedData = { ...prevData.toObject(), [name]: value }; // Update only the specific field
+            return User.fromObject(updatedData); // Ensure consistency with User instance
+        });
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        await fetch(`/api/users/${mail}`, {
+        await fetch(`http://localhost:3002/users/${mail}`, { // Corrected API endpoint
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(userData.toObject()), // Serialize User instance
         });
-        navigate('/');
+        navigate('/'); // Navigate to home after successful update
     };
 
     return (
