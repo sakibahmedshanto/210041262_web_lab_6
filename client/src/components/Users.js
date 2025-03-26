@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import User from '../models/UserModel';
+import DeleteButton from './DeleteButton'; // Import DeleteButton
 
 const Users = () => {
   const [users, setUsers] = useState([]);
@@ -16,15 +18,20 @@ const Users = () => {
     }
   };
 
-
+  const handleDelete = (email) => {
+    setUsers(users.filter(user => user.email !== email));
+  };
+  
   return (
     <div>
-      <h1>Users</h1><table>
+      <h1>Users</h1>
+      <table>
         <thead>
           <tr>
             <th>Name</th>
             <th>Email</th>
             <th>Age</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -33,6 +40,9 @@ const Users = () => {
               <td>{user.name}</td>
               <td>{user.email}</td>
               <td>{user.age}</td>
+              <td>
+                <DeleteButton mail={user.email} onDelete={handleDelete} /> 
+              </td>
             </tr>
           ))}
         </tbody>
